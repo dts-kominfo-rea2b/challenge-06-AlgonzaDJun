@@ -1,4 +1,7 @@
 // TODO: import module bila dibutuhkan di sini
+const fs = require('fs');
+const { resourceLimits } = require('worker_threads');
+
 
 // ! JANGAN DIMODIFIKASI
 let file1 = "./data1.json";
@@ -18,7 +21,37 @@ let modifyFile3 = (val) => {
 
 // TODO: Kerjakan bacaData
 // gunakan variabel file1, file2, dan file3
-const bacaData = null;
+
+const bacaData = (fnCallback) => {
+  let result = []
+  fs.readFile(file2,'utf8', (err, data) => {
+    if (err) fnCallback(err,null);
+    result.push(json2(data))
+  fs.readFile(file1,'utf8', (err, data) => {
+    if (err) fnCallback(err,null);
+    result.push(json1(data))
+  fs.readFile(file3,'utf8', (err, data) => {
+    if (err) fnCallback(err,null);
+    result.push(json3(data))
+    fnCallback(null, result);
+  });
+  });
+});
+};
+const json1 = (j) => {
+    let obj = JSON.parse(j);
+    return (obj.message.split(" ")[1]);
+}
+
+const json2 = (j) => {
+  let obj = JSON.parse(j);
+  return (obj[0].message.split(" ")[1]);
+}
+
+const json3 = (j) => {
+  let obj = JSON.parse(j);
+  return (obj[0].data.message.split(" ")[1]);
+}
 
 // ! JANGAN DIMODIFIKASI
 module.exports = {
